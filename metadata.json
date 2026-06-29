@@ -1,0 +1,6 @@
+{
+  "name": "Deemvmedia",
+  "description": "Where Technology, Design & Storytelling Build Exceptional Digital Experiences.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
