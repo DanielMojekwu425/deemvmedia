@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { SERVICES } from '../data';
 import { Screen, Service } from '../types';
+import Background3D from './Background3D';
 
 // Map icon name strings to Lucide components
 const ICON_MAP = {
@@ -106,14 +107,17 @@ export default function HomeScreen({ setScreen }: HomeScreenProps) {
         {/* Ambient background glows */}
         <div className="absolute top-1/4 left-1/4 w-[300px] h-[300px] rounded-full bg-indigo-500/10 blur-[100px] pointer-events-none" />
         <div className="absolute bottom-1/4 right-1/4 w-[250px] h-[250px] rounded-full bg-sky-500/10 blur-[80px] pointer-events-none" />
+        
+        {/* 3D Reactive Background */}
+        <Background3D />
 
-        <div className="max-w-5xl mx-auto text-center relative z-10 flex flex-col items-center">
+        <div className="max-w-5xl mx-auto text-center relative z-10 flex flex-col items-center pointer-events-none">
           {/* Accent tag badge */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-3 py-1 bg-zinc-900 border border-zinc-800 rounded-full text-zinc-400 font-mono text-[10px] tracking-widest uppercase mb-6"
+            className="inline-flex items-center gap-2 px-3 py-1 bg-zinc-900 border border-zinc-800 rounded-full text-zinc-400 font-mono text-[10px] tracking-widest uppercase mb-6 pointer-events-auto"
           >
             <span className="w-1.5 h-1.5 bg-sky-500 rounded-full animate-pulse" />
             Deemvmedia & Co. Digital Agency
@@ -141,7 +145,7 @@ export default function HomeScreen({ setScreen }: HomeScreenProps) {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-center gap-4 justify-center"
+            className="flex flex-col sm:flex-row items-center gap-4 justify-center pointer-events-auto"
           >
             <button
               onClick={() => setScreen('portfolio')}

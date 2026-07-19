@@ -104,18 +104,32 @@ export default function ContactScreen() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     setIsSubmitting(true);
 
-    // Simulate API storage lock
-    setTimeout(() => {
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      });
+
+      if (response.ok) {
+        setIsSubmitting(false);
+        setSubmitSuccess(true);
+      } else {
+        throw new Error('Failed to submit form');
+      }
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
       setIsSubmitting(false);
-      setSubmitSuccess(true);
-      window.scrollTo({ top: 300, behavior: 'smooth' });
-    }, 1500);
+    }
+    window.scrollTo({ top: 300, behavior: 'smooth' });
   };
 
   const handleResetForm = () => {
