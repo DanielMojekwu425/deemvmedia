@@ -31,17 +31,22 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-zinc-950 text-white font-sans selection:bg-sky-500/20 selection:text-sky-300 antialiased overflow-x-hidden">
-      {/* Header element with navigation coordinates */}
-      <Header currentScreen={screen} setScreen={setScreen} />
+    <div className="relative min-h-screen bg-[url('/bgimage.jpeg')] bg-cover bg-center bg-fixed text-white font-sans selection:bg-sky-500/20 selection:text-sky-300 antialiased overflow-x-hidden">
+      {/* Global dark atmosphere overlay to preserve contrast and typography readability */}
+      <div className="fixed inset-0 bg-zinc-950/70 backdrop-blur-[2px] pointer-events-none z-0" />
 
-      {/* Main Dynamic Viewport */}
-      <main className="flex-grow">
-        {renderActiveScreen()}
-      </main>
+      <div className="relative z-10 flex flex-col min-h-screen">
+        {/* Header element with navigation coordinates */}
+        <Header currentScreen={screen} setScreen={setScreen} />
 
-      {/* Persistent Brand Footer */}
-      <Footer setScreen={setScreen} />
+        {/* Main Dynamic Viewport */}
+        <main className="flex-grow">
+          {renderActiveScreen()}
+        </main>
+
+        {/* Persistent Brand Footer */}
+        <Footer setScreen={setScreen} />
+      </div>
     </div>
   );
 }

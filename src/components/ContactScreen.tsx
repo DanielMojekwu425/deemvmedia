@@ -139,7 +139,7 @@ export default function ContactScreen() {
   };
 
   return (
-    <div id="contact-screen-root" className="w-full bg-zinc-950 text-white pt-28 pb-20">
+    <div id="contact-screen-root" className="w-full bg-transparent text-white pt-28 pb-20">
       <div className="max-w-7xl mx-auto px-6 md:px-12 pt-16">
         {/* Header Title Grid */}
         <section id="contact-header-section" className="mb-20 max-w-3xl">

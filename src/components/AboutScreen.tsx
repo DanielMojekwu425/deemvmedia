@@ -10,7 +10,7 @@ import { TEAM } from '../data';
 
 export default function AboutScreen() {
   return (
-    <div id="about-screen-root" className="w-full bg-zinc-950 text-white pt-28 pb-20">
+    <div id="about-screen-root" className="w-full bg-transparent text-white pt-28 pb-20">
       {/* Hero Header */}
       <section id="about-hero" className="max-w-7xl mx-auto px-6 md:px-12 pt-16 pb-20 relative overflow-hidden">
         {/* Subtle decorative mesh background */}
@@ -48,7 +48,7 @@ export default function AboutScreen() {
       </section>
 
       {/* The Manifesto / Core Pillars */}
-      <section id="about-pillars" className="border-t border-zinc-900/60 bg-zinc-950/60 py-24 px-6 md:px-12">
+      <section id="about-pillars" className="border-t border-zinc-900/60 bg-zinc-950/50 backdrop-blur-md py-24 px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             <div className="lg:col-span-4 lg:sticky lg:top-28">
@@ -104,7 +104,7 @@ export default function AboutScreen() {
       </section>
 
       {/* Meet the Team Section */}
-      <section id="about-team" className="py-24 px-6 md:px-12 bg-zinc-950">
+      <section id="about-team" className="py-24 px-6 md:px-12 bg-zinc-950/40 backdrop-blur-md">
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <span className="font-mono text-[10px] tracking-widest text-teal-400 uppercase font-semibold">
@@ -176,7 +176,7 @@ export default function AboutScreen() {
       </section>
 
       {/* Trust & Partnership Block */}
-      <section id="about-partners" className="bg-zinc-950/50 py-20 border-t border-zinc-900/60 text-center px-6">
+      <section id="about-partners" className="bg-zinc-950/60 backdrop-blur-md py-20 border-t border-zinc-900/60 text-center px-6">
         <div className="max-w-4xl mx-auto">
           <span className="font-mono text-[9px] tracking-widest text-zinc-500 uppercase">Flexible Delivery Frameworks</span>
           <h2 className="font-display text-2xl sm:text-3xl font-bold mt-4 mb-6">Ready to Innovate Together?</h2>

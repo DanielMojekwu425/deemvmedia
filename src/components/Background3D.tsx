@@ -1,21 +1,47 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useGLTF } from '@react-three/drei';
+import { useGLTF, Float, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Create a component that holds and animates the GLTF model
+// Dynamic orbiting point lights casting moving reflections and highlights on the 3D model
+function OrbitingLights() {
+  const light1Ref = useRef<THREE.PointLight>(null);
+  const light2Ref = useRef<THREE.PointLight>(null);
+
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
+    if (light1Ref.current) {
+      light1Ref.current.position.x = Math.sin(t * 1.5) * 4;
+      light1Ref.current.position.y = Math.cos(t * 1.0) * 2;
+      light1Ref.current.position.z = Math.cos(t * 1.5) * 4;
+    }
+    if (light2Ref.current) {
+      light2Ref.current.position.x = Math.cos(t * 1.2) * 4;
+      light2Ref.current.position.y = Math.sin(t * 1.8) * 2;
+      light2Ref.current.position.z = Math.sin(t * 1.2) * 4;
+    }
+  });
+
+  return (
+    <>
+      <pointLight ref={light1Ref} intensity={3.5} distance={10} color="#38bdf8" />
+      <pointLight ref={light2Ref} intensity={2.8} distance={10} color="#f43f5e" />
+    </>
+  );
+}
+
+// 3D Circuit Model with smooth floating, multi-axis spin, interactive parallax, and emissive pulse
 function CircuitModel() {
   const modelRef = useRef<THREE.Group>(null);
+  const wrapperRef = useRef<THREE.Group>(null);
+  const materialsRef = useRef<THREE.MeshStandardMaterial[]>([]);
   const { scene } = useGLTF('/tech circuit logo 3d model.glb');
-  
-  // Track mouse target position for smooth interpolation
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const { size, viewport } = useThree();
 
-  // Mouse move listener
-  React.useEffect(() => {
+  // Track mouse target position for interactive 3D tilt & parallax
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
-      // Normalize mouse position from -1 to 1
       const x = (event.clientX / window.innerWidth) * 2 - 1;
       const y = -(event.clientY / window.innerHeight) * 2 + 1;
       setMousePosition({ x, y });
@@ -25,29 +51,22 @@ function CircuitModel() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Modify materials to have a glowing circuit wireframe or emission effect
-  React.useEffect(() => {
+  useEffect(() => {
     if (scene) {
+      const mats: THREE.MeshStandardMaterial[] = [];
       scene.traverse((child) => {
-        if (child instanceof THREE.Mesh) {
-          // Adjust material properties for a "tech vibe"
-          // If the model has standard materials, we can make them emissive or wireframe
+        if (child instanceof THREE.Mesh && child.material) {
           const material = child.material as THREE.MeshStandardMaterial;
-          if (material) {
-            // Optional: apply wireframe to give that purely digital circuit feel
-            // material.wireframe = true;
-            // material.color.setHex(0x38bdf8); // Tailwind Sky 400
-            
-            // Or apply a subtle emissive glow
-            material.emissive = new THREE.Color(0x38bdf8); // Sky 400
-            material.emissiveIntensity = 0.3;
-            material.roughness = 0.2;
-            material.metalness = 0.8;
-          }
+          material.emissive = new THREE.Color(0x38bdf8);
+          material.emissiveIntensity = 0.35;
+          material.roughness = 0.15;
+          material.metalness = 0.85;
+          mats.push(material);
         }
       });
-      
-      // Center the model in its local group (just in case the original pivot is off)
+      materialsRef.current = mats;
+
+      // Center the model pivot
       const box = new THREE.Box3().setFromObject(scene);
       const center = box.getCenter(new THREE.Vector3());
       scene.position.x = -center.x;
@@ -56,67 +75,75 @@ function CircuitModel() {
     }
   }, [scene]);
 
-  // Animate every frame
   useFrame((state, delta) => {
+    const time = state.clock.elapsedTime;
+
+    // Dynamic emissive pulse glow effect
+    materialsRef.current.forEach((mat) => {
+      mat.emissiveIntensity = 0.35 + Math.sin(time * 2.2) * 0.2;
+    });
+
+    // 1. Base continuous smooth 3D rotation with pitch & roll wobble
     if (modelRef.current) {
-      // Base slow constant rotation on the Y axis
-      modelRef.current.rotation.y += 0.15 * delta;
-
-      // Calculate target rotation based on mouse movement (max 15 degrees tilt = ~0.26 radians)
-      const targetRotationX = mousePosition.y * 0.25;
-      const targetRotationY = mousePosition.x * 0.25;
-
-      // Smoothly interpolate current rotation towards target rotation
-      modelRef.current.rotation.x = THREE.MathUtils.lerp(modelRef.current.rotation.x, targetRotationX, 0.05);
-      
-      // We add the base Y rotation to the mouse target Y rotation 
-      // modelRef.current.rotation.y (base) + mouse offset, but for simplicity, we just tilt it.
-      // Wait, since we are doing constant rotation on Y, we shouldn't overwrite it with lerp unless we structure it hierarchically.
+      modelRef.current.rotation.y += 0.35 * delta;
+      modelRef.current.rotation.x = Math.sin(time * 0.8) * 0.12;
+      modelRef.current.rotation.z = Math.cos(time * 0.6) * 0.08;
     }
-  });
 
-  // Wrapper group to separate base rotation and mouse tilt
-  const wrapperRef = useRef<THREE.Group>(null);
-  
-  useFrame((state, delta) => {
+    // 2. Interactive mouse tracking 3D tilt & parallax position shift
     if (wrapperRef.current) {
-      const targetRotationX = -mousePosition.y * 0.3;
-      const targetRotationY = mousePosition.x * 0.3;
-      
-      wrapperRef.current.rotation.x = THREE.MathUtils.lerp(wrapperRef.current.rotation.x, targetRotationX, 0.05);
-      wrapperRef.current.rotation.y = THREE.MathUtils.lerp(wrapperRef.current.rotation.y, targetRotationY, 0.05);
+      const targetRotX = -mousePosition.y * 0.45;
+      const targetRotY = mousePosition.x * 0.45;
+      const targetRotZ = mousePosition.x * -0.2;
+
+      const targetPosX = mousePosition.x * 0.35;
+      const targetPosY = mousePosition.y * 0.35;
+
+      wrapperRef.current.rotation.x = THREE.MathUtils.lerp(wrapperRef.current.rotation.x, targetRotX, 0.06);
+      wrapperRef.current.rotation.y = THREE.MathUtils.lerp(wrapperRef.current.rotation.y, targetRotY, 0.06);
+      wrapperRef.current.rotation.z = THREE.MathUtils.lerp(wrapperRef.current.rotation.z, targetRotZ, 0.06);
+
+      wrapperRef.current.position.x = THREE.MathUtils.lerp(wrapperRef.current.position.x, targetPosX, 0.06);
+      wrapperRef.current.position.y = THREE.MathUtils.lerp(wrapperRef.current.position.y, targetPosY, 0.06);
     }
   });
 
   return (
     <group ref={wrapperRef}>
-      <group ref={modelRef} scale={1.8}>
-        <primitive object={scene} />
-      </group>
+      <Float speed={2.5} rotationIntensity={0.5} floatIntensity={0.9} floatingRange={[-0.15, 0.15]}>
+        <group ref={modelRef} scale={1.85}>
+          <primitive object={scene} />
+        </group>
+      </Float>
     </group>
   );
 }
 
-// Preload to avoid pop-in
+// Preload GLTF model
 useGLTF.preload('/tech circuit logo 3d model.glb');
 
 export default function Background3D() {
   return (
-    <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
+    <div className="absolute inset-0 z-0 opacity-60 pointer-events-none transition-opacity duration-700">
       <Canvas
         camera={{ position: [0, 0, 5], fov: 45 }}
         gl={{ alpha: true, antialias: true }}
       >
-        <ambientLight intensity={0.4} />
-        {/* Key light: cool cyan/blue */}
-        <directionalLight position={[10, 10, 5]} intensity={1.5} color="#38bdf8" />
-        {/* Fill light: deep indigo/purple */}
-        <directionalLight position={[-10, -10, -5]} intensity={1.0} color="#6366f1" />
-        {/* Rim light: subtle rose */}
-        <directionalLight position={[0, -10, 10]} intensity={0.5} color="#fb7185" />
-        
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[10, 10, 5]} intensity={1.8} color="#38bdf8" />
+        <directionalLight position={[-10, -10, -5]} intensity={1.2} color="#6366f1" />
+        <directionalLight position={[0, -10, 10]} intensity={0.6} color="#fb7185" />
+
+        {/* Dynamic Orbiting Neon Lights */}
+        <OrbitingLights />
+
+        {/* Ambient Holographic Tech Sparkles Field */}
+        <Sparkles count={65} scale={[8, 8, 4]} size={3.5} speed={0.6} opacity={0.6} color="#38bdf8" />
+        <Sparkles count={35} scale={[6, 6, 3]} size={2.5} speed={0.8} opacity={0.4} color="#818cf8" />
+
         <CircuitModel />
       </Canvas>
     </div>
   );
 }
+

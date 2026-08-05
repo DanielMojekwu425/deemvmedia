@@ -47,23 +47,27 @@ export default function Header({ currentScreen, setScreen }: HeaderProps) {
       id="main-header"
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
         isScrolled
-          ? 'bg-zinc-950/80 backdrop-blur-md border-zinc-900/60 py-3 shadow-xl'
-          : 'bg-transparent border-transparent py-5'
+          ? 'bg-zinc-950/85 backdrop-blur-lg border-zinc-900/60 py-2 md:py-3 shadow-2xl'
+          : 'bg-transparent border-transparent py-4 md:py-6'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
-        {/* Logo / Brand Name */}
+        {/* Logo / Brand Name - Spotlight Element */}
         <div className="flex items-center">
           <button
             id="brand-logo-btn"
             onClick={() => handleNavClick('home')}
-            className="flex items-center cursor-pointer select-none outline-none group"
+            className="flex items-center cursor-pointer select-none outline-none group relative"
             aria-label="Deemvmedia Home"
           >
+            {/* Subtle glow background spotlight for logo */}
+            <div className="absolute -inset-2 bg-gradient-to-r from-sky-500/20 via-indigo-500/15 to-rose-500/20 rounded-2xl blur-xl opacity-70 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
             <img
-              src="/website-header.PNG"
+              src="/DeeMVMedialogolatestnobgw.png"
               alt="Deemvmedia Logo"
-              className="h-10 md:h-12 w-auto object-contain transition-all duration-300 group-hover:scale-[1.03] group-hover:brightness-110 filter drop-shadow-[0_2px_10px_rgba(14,165,233,0.15)]"
+              className={`w-auto object-contain transition-all duration-300 group-hover:scale-105 group-hover:brightness-110 filter drop-shadow-[0_0_20px_rgba(56,189,248,0.45)] group-hover:drop-shadow-[0_0_35px_rgba(56,189,248,0.7)] ${
+                isScrolled ? 'h-14 sm:h-16 md:h-20 lg:h-22' : 'h-16 sm:h-20 md:h-26 lg:h-28'
+              }`}
             />
           </button>
         </div>

@@ -96,10 +96,10 @@ export default function HomeScreen({ setScreen }: HomeScreenProps) {
 
   return (
     <div id="home-screen-root" className="w-full">
-      {/* Hero Section */}
+      {/* Hero Section with 3D canvas and bgimage visible */}
       <section
         id="home-hero-section"
-        className="relative min-h-screen bg-zinc-950 flex items-center justify-center pt-24 pb-16 overflow-hidden px-6 md:px-12"
+        className="relative min-h-screen bg-zinc-950/30 flex items-center justify-center pt-32 pb-16 overflow-hidden px-6 md:px-12"
       >
         {/* Subtle grid background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#09090b_1px,transparent_1px),linear-gradient(to_bottom,#09090b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_70%,transparent_100%)] opacity-25" />
@@ -129,7 +129,7 @@ export default function HomeScreen({ setScreen }: HomeScreenProps) {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="font-display text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight text-white mb-8 max-w-4xl leading-[1.08] text-balance"
           >
-            Where <span className="bg-gradient-to-r from-sky-400 via-indigo-400 to-rose-400 bg-clip-text text-transparent">Technology, Design & Storytelling</span> Build Exceptional Digital Experiences
+            Where <span className="bg-gradient-to-r from-sky-400 via-indigo-400 to-rose-400 bg-clip-text text-transparent">Software Solutions & Enterprise Media Production</span> Build Exceptional Digital Experiences
           </motion.h1>
 
           <motion.p
@@ -176,7 +176,7 @@ export default function HomeScreen({ setScreen }: HomeScreenProps) {
       </section>
 
       {/* Agency Stats Segment */}
-      <section id="agency-stats-section" className="bg-zinc-950 border-y border-zinc-900/60 py-16 px-6 md:px-12 relative z-20">
+      <section id="agency-stats-section" className="bg-zinc-950/60 backdrop-blur-md border-y border-zinc-900/60 py-16 px-6 md:px-12 relative z-20">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
           {[
             { value: '150+', label: 'Products Launched' },
@@ -197,7 +197,7 @@ export default function HomeScreen({ setScreen }: HomeScreenProps) {
       </section>
 
       {/* Services Grid Section */}
-      <section id="services-grid-section" className="bg-zinc-950 py-24 px-6 md:px-12 relative z-20">
+      <section id="services-grid-section" className="bg-zinc-950/50 backdrop-blur-md py-24 px-6 md:px-12 relative z-20">
         <div className="max-w-7xl mx-auto">
           <div className="text-center md:text-left mb-16 max-w-2xl">
             <span className="font-mono text-[10px] tracking-widest text-sky-500 uppercase font-semibold">
@@ -249,7 +249,7 @@ export default function HomeScreen({ setScreen }: HomeScreenProps) {
       </section>
 
       {/* Interactive brief planner section: "Experience the Deemv Effect" */}
-      <section id="brief-planner-section" className="bg-zinc-950 pb-28 pt-8 px-6 md:px-12 relative z-20 overflow-hidden">
+      <section id="brief-planner-section" className="bg-zinc-950/50 backdrop-blur-md pb-28 pt-8 px-6 md:px-12 relative z-20 overflow-hidden">
         {/* Subtle decorative visual elements */}
         <div className="absolute top-1/2 left-full w-96 h-96 -translate-y-1/2 -translate-x-1/2 rounded-full bg-rose-500/5 blur-[120px] pointer-events-none" />
 
@@ -411,7 +411,7 @@ export default function HomeScreen({ setScreen }: HomeScreenProps) {
       </section>
 
       {/* Narrative block */}
-      <section id="homepage-narrative-section" className="bg-zinc-950 py-24 border-t border-zinc-900/40 relative z-20">
+      <section id="homepage-narrative-section" className="bg-zinc-950/60 backdrop-blur-md py-24 border-t border-zinc-900/40 relative z-20">
         <div className="max-w-5xl mx-auto px-6 text-center">
           <p className="font-display font-medium text-2xl sm:text-3xl md:text-4xl text-zinc-300 leading-relaxed max-w-4xl mx-auto">
             "Design isn't just decoration. It is how you claim space. When backed by flawless software architectures, design becomes an absolute force multiplier for digital success."
@@ -425,7 +425,7 @@ export default function HomeScreen({ setScreen }: HomeScreenProps) {
       </section>
 
       {/* Final Call to Action */}
-      <section id="home-cta-block-section" className="bg-zinc-950 py-24 border-t border-zinc-900/60">
+      <section id="home-cta-block-section" className="bg-zinc-950/60 backdrop-blur-md py-24 border-t border-zinc-900/60">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="font-display text-4xl font-bold text-white mb-6 tracking-tight">Ready to Build Your Digital Legacy?</h2>
           <p className="text-zinc-400 text-sm md:text-base max-w-xl mx-auto mb-10 leading-relaxed">

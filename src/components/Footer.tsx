@@ -24,7 +24,7 @@ export default function Footer({ setScreen }: FooterProps) {
   };
 
   return (
-    <footer id="main-footer" className="bg-zinc-950 border-t border-zinc-900 pt-16 pb-12 w-full text-zinc-400 font-sans">
+    <footer id="main-footer" className="bg-zinc-950/80 backdrop-blur-lg border-t border-zinc-900 pt-16 pb-12 w-full text-zinc-400 font-sans">
       <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
         {/* Brand column */}
         <div className="md:col-span-2">
